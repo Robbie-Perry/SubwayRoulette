@@ -2,6 +2,7 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -29,12 +30,22 @@ $sandwiches = array("Black Forest Ham", "Chicken and Bacon Ranch Melt", "Cold Cu
 
 if (!isset($_GET['numSauce'])) {
     echo '<form action="?" method="get">
-    # Sauces:<input type="number" value="1" min="0" max="17" name="numSauce" /><br />
-    # Veggies:<input type="number" value="1" min="0" max="10" name="numVeggies" /><br />
-    <input type="submit" value="Roll"/>
+            <label for="numSauce">Number of Sauces: </label>
+            <input type="number" value="1" min="0" max="17" name="numSauce" /><br />
+            
+            <label for="numVeggies">Number of Veggies: </label>
+            <input type="number" value="1" min="0" max="10" name="numVeggies" /><br />
+            
+            <label for="random">Randomize: </label>
+            <input type="checkbox" name="random"><br />
+            <input type="submit" value="Roll"/>
 </form>';
 
 } else {
+    if (isset($_GET['random'])) {
+        $_GET['numSauce'] = rand(0, count($sauces));
+        $_GET['numVeggies'] = rand(0, count($veggies));
+    }
     $sandwichChoice = $sandwiches[rand(0, count($sandwiches) - 1)];
     $breadChoice = $breads[rand(0, 4)];
     $sauceChoices = array_fill(0, $_GET['numSauce'], "");
@@ -50,15 +61,37 @@ if (!isset($_GET['numSauce'])) {
 
     for ($i = 0; $i < $_GET['numVeggies']; $i++) {
         $addVeggie = $veggies[rand(0, 9)];
-        while (in_array($addVeggie, $sauceChoices)) {
+        while (in_array($addVeggie, $veggieChoices)) {
             $addVeggie = $veggies[rand(0, 9)];
         }
         $veggieChoices[$i] = $addVeggie;
     }
-    echo "Your $sandwichChoice sandwich will have: <br />";
-    echo "$breadChoice bread,<br />";
-    var_dump($sauceChoices);
-    var_dump($veggieChoices);
+    echo "
+    <h1>Result:</h1>
+    <h2>$sandwichChoice sandwich with:</h2>
+    <ul>
+    ";
+
+    if (0 == count($veggieChoices)) {
+        echo "No Veggies<br />";
+    }
+
+    foreach ($veggieChoices as $veg) {
+        echo "<li>$veg</li>";
+    }
+
+    if (0 != count($sauceChoices)) {
+            echo "
+            </ul>
+            <p>With these sauces: </p>
+            <ul>
+            ";
+    } else {
+        echo "And no sauces.";
+    }
+    foreach ($sauceChoices as $s) {
+        echo "<li>$s</li>";
+    }
 }
 ?>
         </div>
