@@ -1,0 +1,20 @@
+.subway-1 {
+    color: #ffc20d;
+}
+
+.subway-2 {
+    color: #008952;
+}
+
+.subway-1-bg {
+    background-color: #ffc20d;
+}
+
+.subway-2-bg {
+    background-color: #008952;
+}
+
+.content {
+    padding: 5%;
+    size: 16pt;
+}
