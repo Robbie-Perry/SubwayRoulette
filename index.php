@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2 container">
                 <div class="jumbotron">
-                    <h1><span class="subway-1">Subway</span> <span class="subway-2">Roulette</span></h1>
+                    <a href="index.php"><h1><span class="subway-1">Subway</span> <span class="subway-2">Roulette</span></h1></a>
                 </div>
             </div>
         </div>
@@ -28,8 +28,8 @@ $sandwiches = array("Black Forest Ham", "Chicken and Bacon Ranch Melt", "Cold Cu
     "Roast Beef", "Rotisserie-Style Chicken", "Spicy Italian", "Steak and Cheese", "Subway Club", "Sweet Onion Chicken Teriyaki",
     "Classic Tuna", "Turkey Breast");
 
-if (!isset($_GET['numSauce'])) {
-    echo '<form action="?" method="get">
+if (!isset($_POST['numSauce'])) {
+    echo '<form action="?" method="post">
             <label for="numSauce">Number of Sauces: </label>
             <input type="number" value="1" min="0" max="17" name="numSauce" /><br />
             
@@ -38,20 +38,20 @@ if (!isset($_GET['numSauce'])) {
             
             <label for="random">Randomize: </label>
             <input type="checkbox" name="random"><br />
-            <input type="submit" value="Roll"/>
+            <input type="submit" value="Roll" class="btn-primary" />
 </form>';
 
 } else {
-    if (isset($_GET['random'])) {
-        $_GET['numSauce'] = rand(0, count($sauces));
-        $_GET['numVeggies'] = rand(0, count($veggies));
+    if (isset($_POST['random'])) {
+        $_POST['numSauce'] = rand(0, count($sauces));
+        $_POST['numVeggies'] = rand(0, count($veggies));
     }
     $sandwichChoice = $sandwiches[rand(0, count($sandwiches) - 1)];
     $breadChoice = $breads[rand(0, 4)];
-    $sauceChoices = array_fill(0, $_GET['numSauce'], "");
-    $veggieChoices = array_fill(0, $_GET['numVeggies'], "");
+    $sauceChoices = array_fill(0, $_POST['numSauce'], "");
+    $veggieChoices = array_fill(0, $_POST['numVeggies'], "");
 
-    for ($i = 0; $i < $_GET['numSauce']; $i++) {
+    for ($i = 0; $i < $_POST['numSauce']; $i++) {
         $addSauce = $sauces[rand(0, 15)];
         while (in_array($addSauce, $sauceChoices)) {
             $addSauce = $sauces[rand(0, 15)];
@@ -59,7 +59,7 @@ if (!isset($_GET['numSauce'])) {
         $sauceChoices[$i] = $addSauce;
     }
 
-    for ($i = 0; $i < $_GET['numVeggies']; $i++) {
+    for ($i = 0; $i < $_POST['numVeggies']; $i++) {
         $addVeggie = $veggies[rand(0, 9)];
         while (in_array($addVeggie, $veggieChoices)) {
             $addVeggie = $veggies[rand(0, 9)];
@@ -89,9 +89,17 @@ if (!isset($_GET['numSauce'])) {
     } else {
         echo "And no sauces.";
     }
+
     foreach ($sauceChoices as $s) {
         echo "<li>$s</li>";
     }
+
+    echo "
+        </ul>
+        <form action='index.php'>
+            <input type='submit' value='Back' class='btn-primary' />
+        </form>
+    ";
 }
 ?>
         </div>
