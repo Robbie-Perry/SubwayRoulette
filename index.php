@@ -98,7 +98,13 @@ if (!isset($_POST['numSauce'])) {
         </ul>
         <form action='index.php'>
             <input type='submit' value='Back' class='btn-primary' />
-        </form>
+        </form><br>
+    ";
+
+    echo "
+        <h3>
+            <a href='https://www.facebook.com/subwayroulette/'>Share your creation on our Facebook page!</a>
+        </h3>
     ";
 }
 ?>
